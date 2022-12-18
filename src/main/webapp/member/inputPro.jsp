@@ -4,3 +4,4 @@
 <%--inputPro.jsp --%>
 
 <h2>회원가입을 축하합니다.</h2>
+<meta http-equiv="Refresh" content="0;url=${ctxpath}/main/viewMain.do">

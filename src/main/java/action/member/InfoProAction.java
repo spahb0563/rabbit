@@ -37,7 +37,7 @@ public class InfoProAction implements CommandAction{
 		request.setAttribute("id", id);
 		
 		
-		return "/member/updatePro.jsp";
+		return "/member/infoPro.jsp";
 	}
 
 }

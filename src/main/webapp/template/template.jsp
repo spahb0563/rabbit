@@ -6,14 +6,17 @@
 <%-- template.jsp --%>
 <html>
 <body>
-	<div class="container">
+	<div class="container-md">
 		<jsp:include page="/module/top.jsp" flush="false"/>
 		<!-- content -->	
-		<div>
+		<div class="container-md">
 			<jsp:include page="${CONTENT}" flush="false"/> 
 		</div>
 		<!-- content end-->
 		<jsp:include page="/module/bottom.jsp"/>
 	</div>
 </body>
+<script type="text/javascript" src="${ctxpath}/static/app/js/paging.js"></script>
+<script type="text/javascript" src="${ctxpath}/static/app/js/msg.js?ver=6"></script>
+<script type="text/javascript" src="${ctxpath}/static/app/js/address.js"></script>
 </html>

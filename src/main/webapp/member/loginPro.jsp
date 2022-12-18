@@ -1,15 +1,19 @@
+<%@page import="member.LoginMemberDTO"%>
+<%@page import="member.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/header/header.jsp"%>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="ctxpath" value="<%=request.getContextPath() %>" />   
 <%--loginPro.jsp --%>
 
-<c:set var="ctxpath" value="<%=request.getContextPath()%>" scope="session"/>
 <%--로그인 성공 --%>
-<c:if test="${x>0}">
+<c:if test="${x==1}">
 <%
- 	System.out.println(session.getAttribute("id"));
+	String email = (String)request.getAttribute("email");
+	LoginMemberDTO dto = MemberDAO.getDao().getLoginMember(email);
+ 	session.setAttribute("member", MemberDAO.getDao().getLoginMember(email));
 %>
-  <meta http-equiv="Refresh" content="1;url=${ctxpath}/main/viewMain.do">
+  <meta http-equiv="Refresh" content="0;url=${ctxpath}/main/viewMain.do">
 </c:if>
 
 <%--로그인 실패--%>

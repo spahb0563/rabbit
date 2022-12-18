@@ -2,22 +2,26 @@ package action.item;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import command.CommandAction;
 
 import java.util.*;
 
 import item.*;
+import member.LoginMemberDTO;
 
 
 public class BuyFormAction implements CommandAction{
 
+	
 	@Override
 	public String requestPro(HttpServletRequest request,
 			HttpServletResponse response) throws Throwable {
 		
+		HttpSession session = request.getSession();
 		
-		Integer buyer_id = Integer.parseInt(request.getParameter("buyer_id"));	
+		LoginMemberDTO loginMember = (LoginMemberDTO)session.getAttribute("member");
 		String pageNum=request.getParameter("pageNum");		
 		
 		if(pageNum==null){
@@ -32,41 +36,39 @@ public class BuyFormAction implements CommandAction{
 		
 		int count=0;
 		int number=0;
-		int pageBlock=10;
-		List list=null;
+		int pageBlock=5;
+		List bitemlist=null;
 		//
 		ItemDAO dao=ItemDAO.getDao();
-		count=dao.getBuyListCount(buyer_id);//판매 내역 글 갯수
-		
+		count=dao.getBuyListCount(loginMember.getId());//판매 내역 글 갯수
 		if(count>0){ //글 존재
-			list=dao.getBuyerList(buyer_id,startRow, pageSize);
+			bitemlist=dao.getBuyerList(loginMember.getId(), startRow, pageSize);
 		}else{
-			list=Collections.EMPTY_LIST; //비어있음
+			bitemlist=Collections.EMPTY_LIST; //비어있음
 		}//else-end
 		
 		number=count-(currentPage-1)*pageSize; //출력용 글번호
 		int pageCount=count/pageSize+(count%pageSize==0?0:1);
-		
-		int startPage=(int)(currentPage/pageBlock)*10+1;
+      
+		int startPage=(int)Math.floor((currentPage-1)/pageBlock)*5+1;
 		int endPage=startPage+pageBlock-1;
-		
+      
 		//jsp에서 사용할 속성 설정
-		request.setAttribute("buyer_id", new Integer(buyer_id));
 		request.setAttribute("startPage", new Integer(startPage));
-		request.setAttribute("endPage", new Integer(endPage)); 		//객체 데이터
+		request.setAttribute("endPage", new Integer(endPage));       //객체 데이터
 		request.setAttribute("currentPage", new Integer(currentPage));
-		
+      
 		request.setAttribute("startRow", new Integer(startRow));
 		request.setAttribute("endRow", new Integer(endRow));
-		
+      
 		request.setAttribute("pageBlock", new Integer(pageBlock));
 		request.setAttribute("pageCount", new Integer(pageCount));
 		request.setAttribute("pageSize", new Integer(pageSize));
-		
+      
 		request.setAttribute("count", new Integer(count));
 		request.setAttribute("number", new Integer(number));
 		
-		request.setAttribute("list", list);
+		request.setAttribute("list", bitemlist);
 		return "/item/buyForm.jsp";
 	}
 

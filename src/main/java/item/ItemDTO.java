@@ -22,7 +22,6 @@ public class ItemDTO {
 	private Integer id;
 	private String title;
 	private String content;
-	
 	private BigDecimal price;
 	private String status;
 	

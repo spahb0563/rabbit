@@ -51,7 +51,7 @@ function sendTempPw(){//ajax로 email 체크
 </head>
 <body>
 <h2>비밀번호 찾기</h2>
-<form method="post" action="${ctxpath }/template/template.do" onSubmit="return sendTempPw()">
+<form method="post" action="${ctxpath}/member/findPwPro.do" onSubmit="return sendTempPw()">
 	<table  align="center">
 	 <tr>
 	  <td>

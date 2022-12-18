@@ -1,17 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/header/header.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="ctxpath" value="<%=request.getContextPath() %>" />   
 
 <html>
-<head>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   <title>inputForm.jsp</title>
-   
-     <%--
-     <link rel="stylesheet" type="text/css" href="aa.css">
-      --%>
      <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-     <script type="text/javascript" src="aa.js"></script>
      <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
      <script>
@@ -26,7 +19,7 @@
       }//findAddr()-end
    </script>
      
-   <script>
+   <script>   
         //ajax로 email 중복체크
       function emailCheck(){
            if($('#email').val()==''){
@@ -41,14 +34,15 @@
                  dataType:"JSON",/*서버로부터 받는 자료형*/
                  success:function(data){
                     if(data.x==1){
-                       alert("사용중인 email 입니다")
+                       alert("사용중인 email 입니다");
+                       /* verifyEmail(); */
                        $('#email').val('').focus();
                     }else{
                        alert("사용 가능한 email");
-                       
+                       /* verifyEmail(); */
                        $('#emailck').val('true');///******
                        //alert("email중복 체크 했다는 증거 :"+$('#emailck').val());
-                       $('#password').focus();
+                       //$('#password').focus();
                     }
                  }//success-end
               });//$.ajax()
@@ -61,8 +55,8 @@
                $('#email').focus();
                return false;
             }
-      }
-
+      }        
+ 
       function nickCheck(){//ajax로 nick중복체크
          if($('#nickname').val()==''){
             alert("nickname를 입력 하세요");
@@ -99,11 +93,7 @@
          }
       }
       
-        
-      
    </script>
-</head>
-<body>
    <h2>회원가입</h2>
    <form name="inputForm" method="post" action="${ctxpath}/member/inputPro.do" onsubmit="return check2()">
       <table border="1" align="center">
@@ -120,71 +110,78 @@
             <td>이메일</td>
             <td>
                 <input type="text" name="email" id="email" size="30" placeholder="이메일입력">
-                <input type="button" value="email중복체크" onClick="emailCheck()">          
-                <input type="hidden" name="emailck" id="emailck" value="false">
-   
-                
+                <input class="btn btn-outline-warning" type="button" value="email중복체크" onClick="emailCheck()" >                
+                <%--
+                <input type="button" value="email유효성체크" onClick="verifyEmail()">                      
+                 --%>
+                 
+                <input type="hidden" name="emailck" id="emailck" value="false">                
             </td>
          </tr>
          
          <tr>
             <td>PW</td>
-            <td><input type="password" name="password" id="password" size="12" onFocus="aa()"></td>
+            <td><input type="password" name="password" id="password" size="12">
+                               ※소문자/숫자/특수문자포함 8자리이상 
+                <%--
+                <input type="button" value="비번체크" onClick="chkPW()">                
+                 --%>
+            </td>
          </tr>
          
          <tr>
             <td>PW확인</td>
-            <td><input type="password" name="password2" id="password2" size="12"></td>
+            <td>
+                <input type="password" name="password2" id="password2" size="12" ">
+                <%--
+                <input type="button" value="비번확인체크" onClick="chkPW2()">
+                 --%>
+            </td>
          </tr>
           
          
          <tr>
             <td>이름</td>
-            <td><input type="text" name="name" id="name" size="30" placeholder="이름입력"></td>
+            <td><input type="text" name="name" id="name" size="30" placeholder="이름입력" ">
+                                ※숫자불가
+                <%--
+                <input type="button" value="이름체크" onClick="chkName()">
+                 --%>
+            </td>
          </tr>
          <tr>
             <td>닉네임</td>
             <td>
             <input type="text" name="nickname" id="nickname" size="12">
-            <input type="hidden" name="nicknameck" id="nicknameck" value="false">
-            <input type="button" value="닉네임 중복체크" onClick="nickCheck()">
+            <input type="hidden" name="nicknameck" id="nicknameck" value="false" >
+            <%--
+            <input type="button" value="닉네임체크" onClick="nickCheck()">
+             --%>
             </td>
             
          </tr>
-         
-         <tr>
-            <td>전화</td>
-            <td><input type="text" name="tel" id="tel" size="14" placeholder="전화번호입력"></td>
-         </tr>
-         
          <tr>
             <td>우편번호</td>
             <td>
                <input type="text" name="zipcode" id="zipcode" size="7">
-               <input type="button" value="주소찾기" onClick="findAddr()">
+               <input class="btn btn-outline-warning" type="button" value="주소찾기" onClick="findAddr()">
             </td>
          </tr>
          
          <tr>
             <td>주소</td>
             <td><input type="text" name="address" id="address" size="50" ></td>
-         </tr>
-        
-         <%-- 
-         <tr>
-            <td>상세주소</td>
-            <td><input type="text" name="addr2" id="addr2" size="50"></td>
-         </tr>
-         --%>
-         
+         </tr>        
+       
          <tr>
             <td colspan="2" align="center">
-               <input type="submit" value="회원가입" >
-               <input type="reset" value="다시입력">
-               <input type="button" value="가입안함" onClick="location='${ctxpath}/template/template.jsp'">
+               <input class="btn btn-warning" type="submit" value="회원가입" >
+               <input class="btn btn-warning" type="reset" value="다시입력">
+               <input class="btn btn-warning" type="button" value="취소" onClick="location='${ctxpath}/main/viewMain.do'">
             </td>
          </tr>
       </table>
    </form>
 </body>
 </html>
+<script type="text/javascript" src="${ctxpath}/static/app/js/aa.js"></script>

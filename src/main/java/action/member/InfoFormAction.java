@@ -2,6 +2,7 @@ package action.member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import member.*;
 import command.CommandAction;
@@ -14,11 +15,13 @@ public class InfoFormAction implements CommandAction{
 		
 		request.setCharacterEncoding("utf-8");
 		
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		HttpSession session = request.getSession();
+		
+		LoginMemberDTO loginMember = (LoginMemberDTO)session.getAttribute("member");
 		
 		MemberDAO dao=MemberDAO.getDao();
 		
-		MemberDTO dto= dao.getMember(id);		
+		MemberDTO dto = dao.getMember(loginMember.getId());		
 		
 		request.setAttribute("dto", dto);	
 		
